@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart Management Web Application</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --success: #16a34a;
+      --accent: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navigation Bar */
+    header {
+      background-color: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.25rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--primary);
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Hero Banner */
+    .hero {
+      background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+      color: #ffffff;
+      padding: 2.5rem 2rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.9;
+      max-width: 650px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .card .category {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: #eff6ff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .card .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.75rem;
+    }
+
+    .price {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .qty {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Table Section */
+    .table-container {
+      background: var(--card-bg);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .table-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .total-badge {
+      background-color: #ecfdf5;
+      color: var(--success);
+      font-weight: 600;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* API Reference Box */
+    .api-info {
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      padding: 1.25rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 2rem;
+    }
+
+    .api-info h4 {
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .api-info code {
+      background: #e2e8f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 640px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .hero {
+        padding: 1.5rem 1rem;
+      }
+      .hero h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="/home" class="logo">
+        🛒 ShoppingCart Application
+      </a>
+      <nav>
+        <ul>
+          <li><a href="/">Welcome</a></li>
+          <li><a href="/home" class="active">Home</a></li>
+          <li><a href="/cart" target="_blank">Cart (JSON)</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Hero Banner -->
+    <section class="hero">
+      <span class="badge">FS Module Static Page</span>
+      <h1>Shopping Cart Management Web Application</h1>
+      <p>Demonstrating Node.js Native HTTP Server, FS Module Static File Serving, and RESTful API Integration.</p>
+    </section>
+
+    <!-- Active Cart Summary Table -->
+    <section class="table-container">
+      <div class="table-title">
+        <span>Current Items in Cart</span>
+        <span class="total-badge">HTTP & FS Server Mode</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Item ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Item Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#1</td>
+            <td><strong>Wireless Mouse</strong></td>
+            <td>Electronics</td>
+            <td>₹799</td>
+            <td>2</td>
+            <td><strong>₹1,598</strong></td>
+          </tr>
+          <tr>
+            <td>#2</td>
+            <td><strong>Mechanical Keyboard</strong></td>
+            <td>Electronics</td>
+            <td>₹2,499</td>
+            <td>1</td>
+            <td><strong>₹2,499</strong></td>
+          </tr>
+          <tr>
+            <td>#3</td>
+            <td><strong>USB-C Hub</strong></td>
+            <td>Accessories</td>
+            <td>₹1,299</td>
+            <td>1</td>
+            <td><strong>₹1,299</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Project Architecture Cards -->
+    <div class="grid">
+      <div class="card">
+        <span class="category">Part A — Native HTTP</span>
+        <h3>Built-in HTTP Module</h3>
+        <p>Created using <code>http.createServer()</code> on port <strong>3000</strong>. Handles native routing, HTTP methods (GET, POST), and static file delivery via the FS module without third-party frameworks.</p>
+      </div>
+
+      <div class="card">
+        <span class="category">Part A — FS Module</span>
+        <h3>Static File Serving</h3>
+        <p>Uses Node.js <code>fs.promises</code> to read and stream this HTML document when <code>/home</code> is requested, setting the <code>Content-Type: text/html</code> response header.</p>
+      </div>
+
+      <div class="card">
+        <span class="category">Part B — Express.js</span>
+        <h3>Express REST API</h3>
+        <p>Runs on port <strong>4000</strong> providing complete CRUD endpoints: <code>GET /cart</code>, <code>GET /cart/:id</code>, <code>POST /cart</code>, <code>PUT /cart/:id</code>, and <code>DELETE /cart/:id</code> with JSON payloads.</p>
+      </div>
+    </div>
+
+    <!-- API Reference Guide -->
+    <section class="api-info">
+      <h4>⚡ Server Routes Quick Reference</h4>
+      <p><strong>HTTP Server (Port 3000):</strong></p>
+      <p>• <code>GET /</code> → Welcome message in HTML format</p>
+      <p>• <code>GET /cart</code> → List of cart items in JSON</p>
+      <p>• <code>GET /about</code> → Application information</p>
+      <p>• <code>GET /home</code> → Serves this HTML page using FS module</p>
+      <p>• <code>POST /add-to-cart</code> → Add product JSON with <code>id</code>, <code>productName</code>, <code>price</code>, <code>quantity</code></p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 Shopping Cart Management Web Application | Node.js & Express.js Lab Exam</p>
+  </footer>
+
+</body>
+</html>
