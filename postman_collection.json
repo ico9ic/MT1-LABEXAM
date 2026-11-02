@@ -1,0 +1,200 @@
+{
+  "info": {
+    "name": "MT1-LABEXAM Shopping Cart API",
+    "description": "Postman Collection for Full Stack Development Node.js & Express.js MT1 Lab Exam",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Part A - HTTP Server (Port 3000)",
+      "item": [
+        {
+          "name": "GET Welcome Page",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": [""]
+            }
+          }
+        },
+        {
+          "name": "GET Cart Items (JSON)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["cart"]
+            }
+          }
+        },
+        {
+          "name": "GET About Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/about",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["about"]
+            }
+          }
+        },
+        {
+          "name": "GET Home (FS Static Serving)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/home",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["home"]
+            }
+          }
+        },
+        {
+          "name": "POST Add To Cart (Native HTTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 4,\n  \"productName\": \"Bluetooth Headphones\",\n  \"price\": 1499,\n  \"quantity\": 1,\n  \"category\": \"Electronics\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/add-to-cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["add-to-cart"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part B - Express.js REST API (Port 4000)",
+      "item": [
+        {
+          "name": "1. GET All Cart Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4000/cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart"]
+            }
+          }
+        },
+        {
+          "name": "2. GET Cart Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4000/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart", "1"]
+            }
+          }
+        },
+        {
+          "name": "3. POST Add Product to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 4,\n  \"productName\": \"Bluetooth Headphones\",\n  \"price\": 1499,\n  \"quantity\": 1,\n  \"category\": \"Electronics\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:4000/cart",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart"]
+            }
+          }
+        },
+        {
+          "name": "4. PUT Update Product Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productName\": \"Wireless Mouse\",\n  \"price\": 899,\n  \"quantity\": 3,\n  \"category\": \"Electronics\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:4000/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart", "1"]
+            }
+          }
+        },
+        {
+          "name": "5. DELETE Product from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4000/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart", "1"]
+            }
+          }
+        },
+        {
+          "name": "6. GET Deleted Product (Test 404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4000/cart/1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4000",
+              "path": ["cart", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
